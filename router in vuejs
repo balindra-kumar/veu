@@ -1,0 +1,44 @@
+Vue Router Create
+-------------------
+step 1 = npm install vue-router
+
+step 2 
+------
+create router.js file in main folder
+
+import { createRouter,createWebHistory } from 'vue-router';
+
+
+import HomePage from './components/pages/HomePage';
+import BlogPage from './components/pages/BlogPage';
+
+const routes = [
+    {path:'/', name:'/', component:HomePage},
+    {path:'/blog', name:'blog', component:BlogPage},
+    {path:'/customer', name:'customer', component:CustomerPage},
+    {path:'/features', name:'/features', component:FeaturesPage},
+    {path:'/pricing', name:'/pricing', component:PricingPage},
+    {path:'/singup', name:'/singup', component:SingUp},
+]
+
+const router = createRouter({
+    history:createWebHistory(),
+    routes
+})
+
+export default router;
+
+===================================================================
+
+Header.Vue
+
+Create navbar link 
+ <router-link to="/">Logo</router-link>
+ <router-link to="/aboutus">About Us</router-link>
+
+
+==================================================================
+Go to main.js file
+-------------------
+import router from './router'
+createApp(App).use(router).mount('#app')
