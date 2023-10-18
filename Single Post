@@ -1,0 +1,59 @@
+Create Single Post For Specific Click Data
+----------------------------------------
+
+<template>
+ <div>
+    <p>Read More Data</p>
+     <div class="border rounded mx-auto container">
+        <div class="bg-gray-200 p-3 my-3">
+        <p>{{ this.data.username }}</p>
+        <p>{{ this.data.dob }}</p>
+        <p>{{ this.data.city }}</p>
+        <p>{{ this.data.age }}</p>
+        <button @click="gotoBack()" class="bg-green-400 text-black rounded-lg hover:bg-green-800 py-2 px-2 hover:text-white">Go Back</button>
+        </div>
+        {{ console.log( this.data) }}
+     </div>
+ </div>
+</template>
+
+<script>
+import axios from 'axios';
+export default{
+    name:'ReadMore',
+   
+    data(){
+        return{
+            data:[],
+            getId : null
+        }
+    },
+    created(){
+         this.SingleReadMore()
+    }, 
+    methods:{
+        gotoBack(){
+            window.history.back()
+        },
+        SingleReadMore(){
+               this.getId=this.$route.params.id;
+               console.log("collection id is ",this.getId)
+                axios.get(`http://localhost:5000/getUsers/${this.getId}`).then(res=>{
+                    this.data=res.data
+                    console.log(this.data)
+                }).
+            catch(error=>{
+                console.log(error)
+            })
+        },
+       
+
+    }
+}
+
+
+</script>
+
+<style scoped>
+    
+</style>
