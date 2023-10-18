@@ -1,0 +1,159 @@
+Create Read Delete Post
+--------------------------
+<template>
+<div>
+  
+    <div class="border mx-auto container my-3 p-1">
+        <form method="post" @submit.prevent="postSubmit">
+        <div class="card-header bg-green-500 text-white text-center p-2">
+            <h3>Registration Form</h3>
+        </div>
+        <div class="card-body border p-3">
+            <div class="grid gap-2 md:grid-cols-2">
+                <div>
+                    <label>Username</label>
+                    <input type="text" v-model="formData.username" class="bg-gray-100 rounded p-1 w-full" />
+                </div>
+                <div>
+                    <label>Email Id</label>
+                    <input type="text" v-model="formData.emailid" class="w-full bg-gray-100 rounded p-1" />
+                    <span class="text-red-500">{{ emailid }}</span>
+                </div>
+            </div>
+            <div class="grid gap-2 md:grid-cols-2">
+                <div>
+                    <label>Dob</label>
+                    <input type="text" v-model="formData.dob" class="bg-gray-100 rounded p-1 w-full" />
+                </div>
+                <div>
+                    <label>City</label>
+                    <input type="text" v-model="formData.city" class="w-full bg-gray-100 rounded p-1" />
+                </div>
+            </div>
+        </div>
+        <div class="card-footer bg-gray-100 p-2">
+            <div  class="text-right"><button type="submit" class="bg-green-500 rounded text-white p-2 hover:bg-green-700 transition-all">Submit</button></div>
+        </div>
+        </form>
+    </div>
+   
+    <div class="container mx-auto">
+        <table width="100%">
+        <tr v-for="registration in data" :key="registration.id" class="border-b">
+            <td>{{ registration._id }}</td>
+            <td>{{registration.username}}</td>
+            <td>{{registration.dob}}</td>
+            <td>{{registration.city}}</td>
+            <td>{{registration.age}}</td>
+            <td><router-link :to="'/readmore/' + registration._id">Read More</router-link></td>
+            <td @click="deletePost(registration._id)">Delete post</td>
+            
+        </tr>
+    </table>
+    </div>
+</div>{{  fetchData() }}
+</template>
+
+<script>
+import axios from 'axios';
+export default {
+    name:'SignUp',
+    getPost:[],
+    data(){
+        return{
+           formData:{
+            username:'',
+            emailid:'',
+            dob:'',
+            city:''
+           },
+           data :[]
+        }
+    },
+    methods:{
+        deletePost(deleteId){
+            axios.delete(`http://localhost:5000/getUsers/${deleteId}`).then(res=>{
+                alert("your data is deleted",res.data)
+            }).catch(error=>{
+                console.log("something went wrong",error);
+            })
+        },
+       fetchData(){
+       const fetchUrl = "http://localhost:5000/getUsers";
+       axios.get(fetchUrl).then(res=>{
+        this.data= res.data;
+        // this.data.sort((a,b)=>{
+        //     For name wise ascending data show
+        //     if(a.username<b.username) return 1;
+        //    if(a.username>b.username) return -1
+        //     return 0;
+            
+        // })
+
+       this.latestRecords()
+       }).catch(error=>{
+        console.log(error);
+       })
+    
+       },
+    
+       
+        validateInputFields(){
+         for(const field in this.formData){
+            switch(field){
+                case 'username':
+                    if(!this.formData.username){
+                        return `${field} is required`
+                    }
+                    break;
+                case 'emailid':
+               
+                    if(!this.formData.emailid){
+                        return `${field} is required`
+                    }
+                    break;
+                case 'dob':
+                    if(!this.formData.dob){
+                        return `${field} is required`
+                    }
+                    break;
+                case 'city':
+                    if(!this.formData.city){
+                        return `${field} is required`
+                    }
+                    break;
+                    default:
+                        break;
+            }
+         }
+         return null;
+        },
+        async postSubmit(){
+         const validationError = this.validateInputFields();
+         if(validationError){
+          alert(`Validation error ${validationError}`)
+         }else{
+          
+           try{
+            const apiUrl = "http://localhost:5000/getUsers";
+            const res = await axios.post(apiUrl,this.formData)
+            console.log("data is successfully submit", res.data)
+            this.fetchData()
+           }catch(error){
+            console.log(error)
+           }
+             
+        }
+    },
+    },
+   computed:{
+    latestRecords(){
+        return [...this.data].sort((a, b) => b._id - a._id);
+    }
+   }
+}
+
+</script>
+
+<style scoped>
+</style>
