@@ -1,0 +1,38 @@
+search multiple fields name thorugh one search input 
+----------------------------------------------------
+step 1 template tag
+-----------------------
+
+ <tr v-for="registration in filteredItems" :key="registration.id" class="border-b">
+            <td>{{ registration._id }}</td>
+            <td>{{registration.username}}</td>
+            <td>{{registration.dob}}</td>
+            <td>{{registration.city}}</td>
+            <td>{{registration.age}}</td>
+            <td><router-link :to="'/readmore/' + registration._id">Read More</router-link></td>
+            <td @click="deletePost(registration._id)" class="bg-red-800 border rounded text-white block">Delete post</td>
+            <td> <a href="#" v-on:click="toggleShow(registration._id)" class="bg-green-800 font-bold text-white text-center block">Update Post</a></td>
+            
+        </tr>
+
+step 2 script tag
+------------------------
+        data(){
+        return{
+           data :[],
+           searchQuery: '',
+      
+        },
+
+computed: {
+    filteredItems() {
+      console.log(this.data);
+      const query = this.searchQuery.toLowerCase();
+      //return this.data.filter(item => item.username.toLowerCase().includes(query));
+      return this.data.filter(item => {
+        return Object.values(item).some(value =>
+          value.toString().toLowerCase().includes(query)
+        );
+      });
+    },
+  },
