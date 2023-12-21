@@ -1,0 +1,101 @@
+<template>
+    <div>
+        <h1>Post Read VIew</h1>
+        <div>
+            <div v-if="loading">Loading data.....</div>
+
+            <div class="h-full overflow-hidden overflow-y-scroll">
+                <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    <caption class="caption-top text-center bg-green-400 text-black">
+                        Table 3.1: Professional wrestlers and their signature moves.
+                    </caption>
+                    <thead class="dark:bg-gray-700 bg-gray-100 text-gray-700 text-white table-fixed">
+                        <tr>
+                            <th class="px-2 py-2">Name</th>
+                            <th class="px-2 py-2">Age</th>
+                            <th class="px-2 py-2">City</th>
+                            <th class="px-2 py-2">Update</th>
+                            <th class="px-2 py-2">Check</th>
+                            <th><button class="bg-indigo-800 text-white p-2 block"
+                                    @click="deletePost(postData)">Delete</button></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="item in postData" :key="item.id">
+                            <td>{{ item.name }}</td>
+                            <td>{{ item.age }}</td>
+                            <td>{{ item.city }}</td>
+                            <td><button class="bg-indigo-800 text-white p-2 block">Update</button></td>
+                            <td><input type="checkbox" v-model="item.selected" @change="selectId(item.id)">
+           
+            </td>
+                            
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+export default {
+    layout: "admin",
+    data() {
+        return {
+            postData: [],
+            loading: true,
+            idArray:[]
+        }
+    },
+    methods: {
+        async fetchPostData() {
+            try {
+                const fetchData = await fetch('http://localhost:5000/student');
+                this.postData = await fetchData.json();
+                // const fetchData = await this.$http.get('http://localhost:5000/student');
+                // this.postData = await fetchData.data
+                console.log("read data", this.postData)
+            } catch (error) {
+                console.log(error)
+            } finally {
+                this.loading = false;
+            }
+
+        },
+        selectId(postId){
+           const item = this.postData.find((item)=>item.id === postId);
+           this.idArray.push(item);
+        },
+        async deletePost(postId) {
+
+            for (let i = 0; i < this.idArray.length; i++) {
+                try {
+                    const response = await this.$http.delete(`http://localhost:5000/student/${this.idArray[i].id}`);
+                    if (response) {
+                        // alert("your post is deleted");
+                        await this.fetchPostData()
+                    }
+                } catch (error) {
+                    alert("Your psot is not deleted")
+                }
+            }
+            this.idArray=[];
+
+        }
+
+
+
+
+    },
+    // async mounted(){
+    //       await this.fetchPostData() 
+    //     },
+    async fetch() {
+
+
+        await this.fetchPostData()
+    }
+}
+</script>
+
+<style scoped></style>
