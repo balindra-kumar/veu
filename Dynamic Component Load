@@ -1,0 +1,61 @@
+<template>
+    <div>
+        <section>
+            <div class="mx-auto flex justify-center">
+                <div class="bg-grey-300 rounded-lg border bg-gray-100 p-4 md:w-8/12 lg:ml-6 lg:w-5/12 border-gray-300 mt-10">
+                    <h1>Welcome to login panel</h1>
+                     <form method="post" enctype="multipart/form-data" class="w-full">
+                        
+                        <div>
+                            <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">First name</label>
+                            <input type="text" id="first_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="John" required>
+                        </div>
+                        <div>
+                            <label for="last_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Last name</label>
+                            <input type="text" id="last_name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-1.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Doe" required>
+                        </div>
+                        <div>
+                            <input type="submit" value="Submit" class="hover:cursor-pointer bg-indigo-500 text-white border border-white
+                            float-end p-2 mt-2 block float-right rounded-lg"/>
+                        </div>
+                     </form>
+                </div>
+            </div>
+        </section>
+        
+
+         <div>
+            <button class="bg-indigo-500 text-white p-2 rounded-lg m-1" v-for="(item,index) in list" :key="index"><div @click="tab=`${item.name}`">
+                {{ item.name }}
+            </div>
+            </button>
+         </div>
+      <component :is="tab">Css Componet</component>
+    </div>
+</template>
+<script>
+import CssComp from '/components/dynamic/CssComp.vue';
+import Html from '/components/dynamic/Html.vue';
+import Javsacript from '/components/dynamic/Javascript.vue';
+import Php from '/components/dynamic/Php.vue';
+export default{
+layout:"admin",
+components:{
+    CssComp,
+    Html,
+    Php,
+    Javsacript
+
+},
+data(){
+    return{
+        tab:"CssComp",
+        list:[CssComp, Html, Php, Javsacript]
+    }
+}
+
+}
+</script>
+<style>
+
+</style>
