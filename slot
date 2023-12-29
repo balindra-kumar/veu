@@ -1,0 +1,47 @@
+Slot Tag is used to pass data from parent to child 
+step 1 create a child component
+step 2 import parent component
+====================================
+
+<!-- <child data="Anil Siddhu" /> -->
+        <child>
+        <template v-slot:header>
+            <div class="bg-green-400">
+            <h1>Welcome to Header</h1>
+            <img src="https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg" width="100"/>
+        </div>
+        </template>
+
+        <template v-slot:default class="bg-black text-white">
+           <div class="bg-blue-500 text-white"> <h1>Welcome to child comp body</h1>
+            <p>This is the body slot</p>
+        </div>
+        </template>
+
+        <template v-slot:footer class="bg-orange-400 text-black">
+            <div class="bg-orange-400"><h1>Welcome to child Footer</h1>
+            <img src="https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg" width="100"/>
+        </div>
+        </template>
+    </child>
+    step 3 go to child componet 
+    ------------------------------
+    <template>
+    <!-- <div class="bg-black p-3 text-white">
+        <h2>Child Compoent</h2>
+        {{ data }}
+    </div> -->
+    <!---------------->
+    <div>
+        <slot name="header"></slot>
+        <slot name="default"></slot>
+        <slot name="footer"></slot>
+    </div>
+    <!------------------>
+</template>
+
+<script>
+ export default{
+
+ }
+</script>
