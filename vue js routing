@@ -1,0 +1,37 @@
+Create a router/index.ts
+---------------------------
+import { createRouter, createWebHistory } from "vue-router";
+import HomeViewVue from "@/views/HomeView.vue";
+
+import ServiceViewVue from "@/views/ServiceView.vue";
+import PageNotFoundVue from "@/views/PageNotFound.vue";
+
+
+export default createRouter({
+  history: createWebHistory(),
+  routes: [
+    //  {path:"/", component:HomeViewVue},
+  
+     {path:"/services", component:ServiceViewVue},
+     {path:'/:catchAll(.*)' , component: PageNotFoundVue}
+    
+  ]
+})
+
+step 2 => Main.ts
+--------------------
+import './assets/main.css'
+import { createApp } from 'vue'
+import App from './App.vue'
+import router from './router'
+
+const app = createApp(App)
+
+app.use(router)
+
+app.mount('#app')
+
+step 3 = > HTML template
+-----------------------
+ <router-link to="/" class="bg-green-400 rounded border border-black-600 px-4 py-2 mb-0">Home</router-link>
+
